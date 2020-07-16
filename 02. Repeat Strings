@@ -1,0 +1,22 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] words = scanner.nextLine().split("\\s+");
+
+        String finalMessage = "";
+
+        for (int i = 0; i < words.length; i++) {
+            int lengthOfCurrentWord = words[i].length();
+
+            for (int j = 0; j < lengthOfCurrentWord; j++) {
+                finalMessage += words[i];
+            }
+        }
+
+        System.out.println(finalMessage);
+    }
+}
