@@ -1,0 +1,26 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Map<String, Integer> resources = new LinkedHashMap<>();
+        String command = scanner.nextLine();
+        while (!command.equals("stop")) {
+            int quantity = Integer.parseInt(scanner.nextLine());
+
+            if (resources.containsKey(command)) {
+                resources.replace(command, resources.get(command) + quantity);
+            } else {
+                resources.put(command, quantity);
+            }
+            command = scanner.nextLine();
+        }
+        for (Map.Entry<String, Integer> stringIntegerEntry : resources.entrySet()) {
+            System.out.printf("%s -> %d%n",
+                    stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
+        }
+    }
+}
