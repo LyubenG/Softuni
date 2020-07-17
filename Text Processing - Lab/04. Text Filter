@@ -1,0 +1,27 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] forbiddenWords = scanner.nextLine().split(", ");
+        String inputText = scanner.nextLine();
+
+
+        for (int i = 0; i < forbiddenWords.length; i++) {
+            int lengthOfForbiddenWord = forbiddenWords[i].length();
+            StringBuilder forbiddenWord = new StringBuilder();
+
+            for (int j = 0; j < lengthOfForbiddenWord; j++) {
+                forbiddenWord.append("*");
+            }
+
+            while (inputText.contains(forbiddenWords[i])) {
+                inputText = inputText.replace(forbiddenWords[i], forbiddenWord.toString());
+            }
+        }
+        
+        System.out.println(inputText);
+    }
+}
