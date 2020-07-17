@@ -1,0 +1,22 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        String message = scanner.nextLine();
+
+        StringBuilder encryptedMessage = new StringBuilder();
+        for (int i = 0; i < message.length(); i++) {
+            int oldAsciiValue = message.charAt(i);
+            int newAsciiValue = oldAsciiValue + 3;
+            
+            char newChar = (char) newAsciiValue;
+             encryptedMessage.append(newChar);
+        }
+        
+        System.out.println(encryptedMessage);
+    }
+}
