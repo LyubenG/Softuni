@@ -1,0 +1,19 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] tokens = scanner.nextLine().split("\\\\");
+
+        int lengthOfPath = tokens.length;
+
+        String nameOfFileAndExt = tokens[lengthOfPath - 1];
+       String[] nameAndExt = nameOfFileAndExt.split("\\.");
+       
+        System.out.println("File name: " + nameAndExt[0]);
+        System.out.println("File extension: " + nameAndExt[1]);
+
+    }
+}
