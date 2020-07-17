@@ -1,0 +1,36 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        StringBuilder sb = new StringBuilder();
+        String message = scanner.nextLine();
+
+        sb.append(message);
+
+        char currentLetter = 0;
+        for (int i = 0; i < message.length(); i++) {
+            int counterForCurrentLetter = 0;
+             currentLetter = message.charAt(i);
+             
+             if (currentLetter == ' '){
+                 continue;
+             }
+            for (int j = 0; j < message.length() ; j++) {
+                if (message.charAt(j) == currentLetter){
+                    counterForCurrentLetter++;
+                }
+            }
+            
+            System.out.printf("%c -> %s%n",
+                    currentLetter, counterForCurrentLetter);
+            String letter = currentLetter + "";
+            
+            message = message.replace(currentLetter, ' ');;
+        }
+
+    }
+}
