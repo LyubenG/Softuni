@@ -1,0 +1,18 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+       
+        String word = scanner.nextLine();
+        String input = scanner.nextLine();
+
+        while(input.contains(word)){
+            input = input.replace(word, "");
+        }
+
+        System.out.println(input);
+    }
+}
