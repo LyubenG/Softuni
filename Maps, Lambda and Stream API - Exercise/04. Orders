@@ -1,0 +1,40 @@
+package com.company;
+
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Double> productsList = new LinkedHashMap<>();
+        Map<String, Integer> quantityList = new LinkedHashMap<>();
+
+        String command = scanner.nextLine();
+        while(!command.equals("buy")){
+            //Splitting the string in 3 commands..
+            String[] tokens = command.split("\\s+");
+            String product = tokens[0];
+            int quantity = Integer.parseInt(tokens[2]);
+            double price = Double.parseDouble(tokens[1]);
+
+            //Checking if the product has been already added..
+            if (productsList.containsKey(product)) {
+               int lastQuantity = quantityList.get(product);
+               double newPrice = (lastQuantity + quantity) * price;
+                quantityList.put(product,quantity + lastQuantity);
+                productsList.put(product, newPrice);
+
+            } else {
+                productsList.put(product, price * quantity);
+                quantityList.put(product,quantity);
+            }
+            command = scanner.nextLine();
+        }
+
+        //Printing results..
+        for (Map.Entry<String, Double> s : productsList.entrySet()) {
+            System.out.printf("%s -> %.2f%n",
+                    s.getKey(), s.getValue());
+        }
+    }
+}
