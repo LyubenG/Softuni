@@ -1,0 +1,50 @@
+package com.company;
+
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int numberOfCommands = Integer.parseInt(scanner.nextLine());
+        Map<String, String> registration = new LinkedHashMap<>();
+
+        for (int i = 0; i < numberOfCommands; i++) {
+            String[] commandTokens = scanner.nextLine().split("\\s+");
+            //Splitting the command to strings..
+            String command = commandTokens[0];
+            String name = commandTokens[1];
+
+            switch (command) {
+                //Checking which command was given..
+                case "register":
+                    if (!registration.containsKey(name)) {
+                        String regNumber = commandTokens[2];
+                        registration.put(name, regNumber);
+                        System.out.printf("%s registered %s successfully%n",
+                                name, regNumber);
+                    } else {
+                        System.out.printf("ERROR: already registered with plate number %s%n",
+                                registration.get(name));
+                    }
+                    break;
+                case "unregister":
+                    if (registration.containsKey(name)) {
+                        registration.remove(name);
+                        System.out.printf("%s unregistered successfully%n",
+                                name);
+                    } else {
+                        System.out.printf("ERROR: user %s not found%n",
+                                name);
+                    }
+                    break;
+            }
+        }
+        //Printing the results..
+        for (Map.Entry<String, String> people : registration.entrySet()) {
+            System.out.printf("%s => %s%n",
+                    people.getKey(), people.getValue());
+        }
+    }
+}
