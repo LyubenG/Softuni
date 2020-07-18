@@ -1,0 +1,43 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, List<String>> coursesMap = new LinkedHashMap<>();
+
+        String command = scanner.nextLine();
+        int counterForCurrentCourse = 0;
+        while (!command.equals("end")) {
+
+            String[] commandTokens = command.split(" : ");
+            String courseName = commandTokens[0];
+            String studentName = commandTokens[1];
+
+            if (!coursesMap.containsKey(courseName)) {
+                coursesMap.put(courseName, new ArrayList<>());
+                coursesMap.get(courseName).add(studentName);
+            } else {
+                if (!coursesMap.get(courseName).contains(studentName)) {
+                    coursesMap.get(courseName).add(studentName);
+                }
+            }
+            command = scanner.nextLine();
+        }
+
+        coursesMap.entrySet()
+                .stream()
+                .sorted((c1, c2) -> Integer.compare(c2.getValue().size(), c1.getValue().size()))
+                .forEach(entry -> {
+                    System.out.println(String.format("%s: %d"
+                    , entry.getKey(), entry.getValue().size()));
+                    entry
+                            .getValue()
+                            .stream()
+                            .sorted((s1, s2) -> s1.compareTo(s2))
+                            .forEach(s -> System.out.println(String.format("-- %s",
+                                    s)));
+                });
+        }
+    }
