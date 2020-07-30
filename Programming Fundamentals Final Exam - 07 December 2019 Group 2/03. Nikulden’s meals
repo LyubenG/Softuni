@@ -1,0 +1,60 @@
+package com.company;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, List<String>> guestsMap = new HashMap<>();
+        List<String> meals = new ArrayList<>();
+
+        String command = scanner.nextLine();
+
+        int unlikedMeals = 0;
+        while (!command.equals("Stop")) {
+            String[] tokens = command.split("-");
+            String type = tokens[0];
+            String guest = tokens[1];
+            String meal = tokens[2];
+            if (type.equals("Like")) {
+                guestsMap.putIfAbsent(guest, new ArrayList<>());
+                meals = guestsMap.get(guest);
+                if (!meals.contains(meal)) {
+                    meals.add(meal);
+                }
+            } else {
+                if (guestsMap.containsKey(guest)) {
+                    meals = guestsMap.get(guest);
+                    if (meals.contains(meal)) {
+                        meals.remove(meal);
+                        System.out.printf("%s doesn't like the %s.%n",
+                                guest, meal);
+                        unlikedMeals++;
+                    } else {
+                        System.out.printf("%s doesn't have the %s in his/her collection.%n",
+                                guest, meal);
+                    }
+                } else {
+                    System.out.printf("%s is not at the party.%n",
+                            guest);
+                }
+            }
+            command = scanner.nextLine();
+        }
+        guestsMap.entrySet().stream().sorted((left, right) -> {
+            int res = right.getValue().size() - left.getValue().size();
+            if (res == 0) {
+                return left.getKey().compareTo(right.getKey());
+            } else {
+                return res;
+            }
+        }).forEach(e -> System.out.println(e.getKey() + ": " + printList(e.getValue())));
+        System.out.println("Unliked meals: " + unlikedMeals);
+    }
+
+    private static String printList(List<String> value) {
+        return value.toString().replaceAll("[\\[\\]]", "");
+    }
+}
