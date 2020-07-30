@@ -1,0 +1,72 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String message = scanner.nextLine();
+        String command = scanner.nextLine();
+        while (!command.equals("Finish")) {
+            String[] commandTokens = command.split("\\s+");
+
+            String firstCommand = commandTokens[0];
+            switch (firstCommand) {
+                case "Replace":
+                    String currentChar = commandTokens[1];
+                    String newChar = commandTokens[2];
+                    message = message.replace(currentChar, newChar);
+                    System.out.println(message);
+                    break;
+                case "Cut":
+                    int startIndex = Integer.parseInt(commandTokens[1]);
+                    int endIndex = Integer.parseInt(commandTokens[2]);
+                    if (startIndex >= 0 && endIndex <= message.length() && startIndex <= endIndex) {
+                        String firstPart = message.substring(0, startIndex);
+                        String lastPart = message.substring(endIndex + 1);
+                        message = firstPart + lastPart;
+                        System.out.println(message);
+                    } else {
+                        System.out.println("Invalid indexes!");
+                    }
+                    break;
+                case "Make":
+                    String secondCommand = commandTokens[1];
+                    if (secondCommand.equals("Upper")) {
+                        message = message.toUpperCase();
+                    } else {
+                        message = message.toLowerCase();
+                    }
+                    System.out.println(message);
+                    break;
+                case "Check":
+                    String checkIfMessage = commandTokens[1];
+                    if (message.contains(checkIfMessage)) {
+                        System.out.printf("Message contains %s%n",
+                                checkIfMessage);
+                    } else {
+                        System.out.printf("Message doesn't contain %s%n",
+                                checkIfMessage);
+                    }
+                    break;
+                case "Sum":
+                    int sumOfAscii = 0;
+                    int startingIndex = Integer.parseInt(commandTokens[1]);
+                    int endingIndex = Integer.parseInt(commandTokens[2]);
+                    if (startingIndex >= 0 && endingIndex <= message.length() && startingIndex <= endingIndex) {
+                        for (int i = startingIndex; i <= endingIndex; i++) {
+                            int valueOfChar = message.charAt(i);
+                            sumOfAscii += valueOfChar;
+                        }
+                        System.out.println(sumOfAscii);
+                    } else {
+                        System.out.println("Invalid indexes!");
+                    }
+
+                    break;
+            }
+            command = scanner.nextLine();
+        }
+
+    }
+}
