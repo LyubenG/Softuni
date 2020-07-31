@@ -1,0 +1,30 @@
+package com.company;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        final String regex = "(U\\$)(?<name>[A-Z][a-z][a-z]+)\\1(P@\\$)(?<password>[a-z]{5,}[0-9]+)\\3";
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+
+        int loop = Integer.parseInt(scanner.nextLine());
+        int counterForSuccessfulRegs = 0;
+        for (int i = 0; i < loop; i++) {
+            String input = scanner.nextLine();
+            Matcher matcher = pattern.matcher(input);
+            if (matcher.find()){
+                System.out.println("Registration was successful");
+                System.out.println("Username: " + matcher.group("name") + ", Password: " + matcher.group("password"));
+                counterForSuccessfulRegs++;
+            } else {
+                System.out.println("Invalid username or password");
+            }
+        }
+        System.out.printf("Successful registrations: %s%n",
+                counterForSuccessfulRegs);
+
+    }
+}
