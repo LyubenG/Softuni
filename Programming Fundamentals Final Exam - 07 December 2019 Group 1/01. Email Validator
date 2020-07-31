@@ -1,0 +1,59 @@
+package com.company;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String email = scanner.nextLine();
+
+        String input = scanner.nextLine();
+        while (!input.equals("Complete")) {
+            String[] tokens = input.split("\\s+");
+            String command = tokens[0];
+            switch (command) {
+                case "Make":
+                    String upperOrLower = tokens[1];
+                    if (upperOrLower.equals("Upper")) {
+                        email = email.toUpperCase();
+                    } else {
+                        email = email.toLowerCase();
+                    }
+                    System.out.println(email);
+                    break;
+                case "GetDomain":
+                    int count = Integer.parseInt(tokens[1]);
+                    String domain = email.substring(email.length() - count);
+                    System.out.println(domain);
+                    break;
+                case "GetUsername":
+                    int indexOfEmail = 0;
+                    if (email.contains("@")) {
+                        for (int i = 0; i < email.length(); i++) {
+                            if (email.charAt(i) == '@') {
+                                indexOfEmail = i;
+                            }
+                        }
+                        System.out.println(email.substring(0, indexOfEmail));
+                    } else {
+                        System.out.printf("The email %s doesn't contain the @ symbol.%n",
+                                email);
+                    }
+                    break;
+                case "Replace":
+                    String replaceChar = tokens[1];
+                    email = email.replace(replaceChar, "-");
+                    System.out.println(email);
+                    break;
+                case "Encrypt":
+                    for (int i = 0; i < email.length(); i++) {
+                        System.out.print((int) email.charAt(i) + " ");
+                    }
+                    break;
+            }
+            input = scanner.nextLine();
+        }
+    }
+}
