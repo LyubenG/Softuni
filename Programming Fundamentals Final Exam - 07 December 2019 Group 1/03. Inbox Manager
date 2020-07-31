@@ -1,0 +1,61 @@
+package com.company;
+
+import java.util.*;
+
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, List<String>> emails = new LinkedHashMap<>();
+
+        String input = scanner.nextLine();
+        while (!input.equals("Statistics")) {
+            String[] tokens = input.split("->");
+            String command = tokens[0];
+            String username = tokens[1];
+
+            switch (command) {
+                case "Add":
+                    if (!emails.containsKey(username)){
+                        emails.put(username, new ArrayList<>());
+                    } else {
+                        System.out.printf("%s is already registered%n",
+                                username);
+                    }
+                    break;
+                case "Send":
+                    String emailMessage = tokens[2];
+                    emails.get(username).add(emailMessage);
+                    break;
+                case "Delete":
+                    if (emails.containsKey(username)){
+                        emails.remove(username);
+                    } else {
+                        System.out.printf("%s not found!%n",
+                                username);
+                    }
+                    break;
+            }
+            input = scanner.nextLine();
+        }
+        System.out.printf("Users count: %d%n",
+                emails.size());
+
+        emails. // - Descending Order - //
+                entrySet().
+                stream().
+                sorted((a, b) -> {
+            int result = Integer.compare(b.getValue().size(), a.getValue().size()); // - Comparing by values sizes -  //
+            if (result == 0){
+                result = a.getKey().compareTo(b.getKey()); // - Then comparing by key names  - //
+            }
+            return result;
+        } ) .forEach(entry -> { // - Printing the results - //
+            System.out.println(entry.getKey());
+            for (String s : entry.getValue()) {
+                System.out.printf(" - %s%n",
+                        s);
+            }
+        });
+    }
+}
