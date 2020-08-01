@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// 60/100 //
+// 86/100 //
 
 public class Main {
     public static void main(String[] args) {
@@ -118,7 +118,7 @@ public class Main {
                 sorted((a, b) -> {
                     int result = Integer.compare(b.getValue().size(), a.getValue().size()); // - Comparing by values sizes -  //
                     if (result == 0) {
-                        result = b.getKey().compareTo(a.getKey()); // - Then comparing by key names  - //
+                        result = a.getKey().compareTo(b.getKey()); // - Then comparing by key names  - //
                     }
                     return result;
                 }).forEach(entry -> { // - Printing the results - //
