@@ -1,0 +1,135 @@
+package com.company;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+// 60/100 //
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, ArrayList<Integer>> heroeshp = new HashMap<>();
+        Map<String, ArrayList<Integer>> heroesmp = new HashMap<>();
+        int loopLength = Integer.parseInt(scanner.nextLine());
+
+
+        for (int i = 0; i < loopLength; i++) {
+            String heroInput = scanner.nextLine();
+            String[] tokens = heroInput.split("\\s+");
+            String heroName = tokens[0];
+            int hitPoints = Integer.parseInt(tokens[1]);
+            int manaPoints = Integer.parseInt(tokens[2]);
+            heroeshp.put(heroName, new ArrayList<>());
+            heroeshp.get(heroName).add(hitPoints);
+            heroesmp.put(heroName, new ArrayList<>());
+            heroesmp.get(heroName).add(manaPoints);
+        }
+
+        String input = scanner.nextLine();
+        while (!input.equals("End")) {
+            String[] tokens = input.split(" - ");
+            String command = tokens[0];
+            String hero = tokens[1];
+            int health = Integer.parseInt(tokens[2]);
+
+            switch (command) {
+                case "Heal":
+                 /*  The hero increases his HP. If a command is given that would bring the HP of the hero above 100, HP is increased
+                 so that it reaches the maximum. Print the following message:
+                   "{hero name} healed for {amount recovered} HP!"*/
+                    int currentHitPoints = heroeshp.get(hero).get(0);
+                    int newPoints = currentHitPoints + health;
+                    if (newPoints > 100) {
+                        heroeshp.get(hero).remove(0);
+                        heroeshp.get(hero).add(0, 100);
+                        System.out.printf("%s healed for %d HP!%n",
+                                hero, 100 - currentHitPoints);
+                    } else {
+                        heroeshp.get(hero).remove(0);
+                        heroeshp.get(hero).add(0, newPoints);
+                        System.out.printf("%s healed for %d HP!%n",
+                                hero, health);
+                    }
+                    break;
+                case "CastSpell":
+                    String spell = tokens[3];
+/*                    If the hero has the required MP, he casts the spell, thus reducing his MP. Print this message:
+                    "{hero name} has successfully cast {spell name} and now has {mana points left} MP!"
+                    If the hero is unable to cast the spell print:
+                    "{hero name} does not have enough MP to cast {spell name}!"*/
+                    if (heroesmp.get(hero).get(0) >= health) {
+                        int currentManaPoints = heroesmp.get(hero).get(0);
+                        int newManaPoints = currentManaPoints - health;
+                        heroesmp.get(hero).remove(0);
+                        heroesmp.get(hero).add(0, newManaPoints);
+                        System.out.printf("%s has successfully cast %s and now has %d MP!%n",
+                                hero, spell, newManaPoints);
+                    } else {
+                        System.out.printf("%s does not have enough MP to cast %s!%n",
+                                hero, spell);
+                    }
+                    break;
+                case "TakeDamage":
+                    String attacker = tokens[3];
+                    /*Reduce the hero HP by the given damage amount.If the hero is still alive (his HP is greater than 0)print:
+                    "{hero name} was hit for {damage} HP by {attacker} and now has {current HP} HP left!"
+                    If the hero has died, remove him from your party and print:
+                    o "{hero name} has been killed by {attacker}!"*/
+                    int currentHealth = heroeshp.get(hero).get(0);
+                    int newHealth = currentHealth - health;
+                    if (newHealth > 0) {
+                        heroeshp.get(hero).remove(0);
+                        heroeshp.get(hero).add(0, newHealth);
+                        System.out.printf("%s was hit for %d HP by %s and now has %d HP left!%n",
+                                hero, health, attacker, newHealth);
+                    } else {
+                        heroeshp.remove(hero);
+                        heroesmp.remove(hero);
+                        System.out.printf("%s has been killed by %s!%n",
+                                hero, attacker);
+                    }
+                    break;
+                case "Recharge":
+                    /*The hero increases his MP. If a command is given that would bring the MP of the hero above 200,
+                     MP is increased so that it reaches the maximum. Print the following message:
+                    "{hero name} recharged for {amount recovered} MP!"*/
+                    int currentManaPoints = heroesmp.get(hero).get(0);
+                    int newManaPoints = currentManaPoints + health;
+                    heroesmp.get(hero).remove(0);
+                    if (newManaPoints > 200) {
+                        heroesmp.get(hero).add(0, 200);
+                        System.out.printf("%s recharged for %d MP!%n",
+                                hero, 200 - currentManaPoints);
+                    } else {
+                        heroesmp.get(hero).add(0, newManaPoints);
+                        System.out.printf("%s recharged for %d MP!%n",
+                                hero, health);
+                    }
+                    break;
+            }
+            input = scanner.nextLine();
+        }
+
+
+        // - Descending Order - //
+        heroeshp.entrySet().
+                stream().
+                sorted((a, b) -> {
+                    int result = Integer.compare(b.getValue().size(), a.getValue().size()); // - Comparing by values sizes -  //
+                    if (result == 0) {
+                        result = b.getKey().compareTo(a.getKey()); // - Then comparing by key names  - //
+                    }
+                    return result;
+                }).forEach(entry -> { // - Printing the results - //
+            System.out.println(entry.getKey());
+            for (Integer s : entry.getValue()) {
+                int lastMP = heroesmp.get(entry.getKey()).get(0);
+                System.out.printf("HP: %s%n",
+                        s);
+                System.out.printf("MP: %s%n",
+                        lastMP);
+            }
+        });
+    }
+}
