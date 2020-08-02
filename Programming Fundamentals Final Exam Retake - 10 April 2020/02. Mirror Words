@@ -1,0 +1,55 @@
+package com.company;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+// 90/100 //
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, String> mirroredWords = new LinkedHashMap<>();
+        String input = scanner.nextLine();
+        final String regex = "(\\#|\\@)(?<word>[A-Za-z]{3,})\\1\\1(?<wordTwo>[A-Za-z]{3,})\\1";
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+
+        Matcher matcher = pattern.matcher(input);
+
+        int counterForMatches = 0;
+        while (matcher.find()) {
+            counterForMatches++;
+            String wordOne = matcher.group("word");
+            String wordTwo = matcher.group("wordTwo");
+            StringBuilder sb = new StringBuilder(wordOne);
+            String reversed = sb.reverse().toString();
+            if (reversed.equals(wordTwo)) {
+                mirroredWords.put(wordOne, wordTwo);
+            }
+        }
+        if (counterForMatches == 0) {
+            System.out.println("No word pairs found!");
+        } else {
+            System.out.printf("%d word pairs found!%n",
+                    counterForMatches);
+        }
+        if (mirroredWords.size() > 0) {
+            AtomicInteger counter = new AtomicInteger();
+            System.out.println("The mirror words are: ");
+            mirroredWords.entrySet().forEach((entry -> {
+                if (counter.get() > 0) {
+                    System.out.printf(", " + "%s <=> %s",
+                            entry.getKey(), entry.getValue());
+                } else {
+                    System.out.printf("%s <=> %s",
+                            entry.getKey(), entry.getValue());
+                    counter.getAndIncrement();
+                }
+            }));
+        } else {
+            System.out.println("No mirror words!");
+        }
+
+    }
+}
