@@ -1,0 +1,101 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, Integer> cityAndGold = new LinkedHashMap<>();
+        Map<String, Integer> cityAndPopulation = new LinkedHashMap<>();
+
+        String input = scanner.nextLine();
+        while (!input.equals("Sail")) {
+            String[] tokens = input.split("\\|\\|");
+            String city = tokens[0];
+            int population = Integer.parseInt(tokens[1]);
+            int gold = Integer.parseInt(tokens[2]);
+            if (cityAndGold.containsKey(city)) {
+                //Changing values for population
+                int oldValueForPopulation = cityAndPopulation.get(city);
+                int newValueForPopulation = oldValueForPopulation + population;
+                cityAndPopulation.remove(city);
+                cityAndPopulation.put(city, newValueForPopulation);
+                //Changing values for gold
+                int oldValueForGold = cityAndGold.get(city);
+                int newValueForGold = oldValueForGold + gold;
+                cityAndGold.remove(city);
+                cityAndGold.put(city, newValueForGold);
+            } else {
+                cityAndGold.put(city, gold);
+                cityAndPopulation.put(city, population);
+            }
+            input = scanner.nextLine();
+        }
+        String commands = scanner.nextLine();
+        while (!commands.equals("End")) {
+            String[] commandTokens = commands.split("=>");
+            String command = commandTokens[0];
+            String city = commandTokens[1];
+            switch (command) {
+                case "Plunder":
+                    int people = Integer.parseInt(commandTokens[2]);
+                    int gold = Integer.parseInt(commandTokens[3]);
+
+                    int peopleAfterPlunder = cityAndPopulation.get(city) - people;
+                    int goldAfterPlunder = cityAndGold.get(city) - gold;
+                    cityAndGold.remove(city);
+                    cityAndPopulation.remove(city);
+                    if (peopleAfterPlunder > 0 && goldAfterPlunder > 0) {
+                        cityAndGold.put(city, goldAfterPlunder);
+                        cityAndPopulation.put(city, peopleAfterPlunder);
+                        System.out.printf("%s plundered! %d gold stolen, %d citizens killed.%n",
+                                city, gold, people);
+                    } else {
+                        System.out.printf("%s plundered! %d gold stolen, %d citizens killed.%n",
+                                city, gold, people);
+                        System.out.printf("%s has been wiped off the map!%n",
+                                city);
+                    }
+                    break;
+                case "Prosper":
+                    /*There has been a dramatic economic growth in the given city, increasing its treasury by the given amount of gold.
+                    The gold amount can be a negative number, so be careful. If a negative amount of gold is
+                    given print: "Gold added cannot be a negative number!" and ignore the command.
+                    If the given gold is a valid amount, increase the town's gold reserves by the respective amount and
+                    print the following message: "{gold added} gold added to the city treasury. {town} now has {total gold} gold."*/
+                    int givenGold = Integer.parseInt(commandTokens[2]);
+                    if (givenGold < 0) {
+                        System.out.printf("Gold added cannot be a negative number!%n");
+                        break;
+                    } else {
+                        int currentGold = cityAndGold.get(city);
+                        int newAmountOfGold = currentGold + givenGold;
+                        cityAndGold.remove(city);
+                        cityAndGold.put(city, newAmountOfGold);
+                        System.out.printf("%d gold added to the city treasury. %s now has %d gold.%n",
+                                givenGold, city, newAmountOfGold);
+                    }
+                    break;
+            }
+            commands = scanner.nextLine();
+        }
+
+        System.out.printf("Ahoy, Captain! There are %d wealthy settlements to go to:%n",
+                cityAndGold.size());
+        cityAndGold. // - Descending Order - //
+                entrySet().
+                stream().
+                sorted((a, b) -> {
+                    int result = Integer.compare(b.getValue(), a.getValue()); // - Comparing by values sizes -  //
+                    if (result == 0) {
+                        result = a.getKey().compareTo(b.getKey()); // - Then comparing by key names  - //
+                    }
+                    return result;
+                }).forEach(entry -> { // - Printing the results - //
+                int currentPopulationForCity = cityAndPopulation.get(entry.getKey());
+                System.out.printf("%s -> Population: %d citizens, Gold: %d kg%n",
+                        entry.getKey(), currentPopulationForCity, entry.getValue());
+
+        });
+    }
+}
