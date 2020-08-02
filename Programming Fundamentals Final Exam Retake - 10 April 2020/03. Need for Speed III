@@ -1,0 +1,99 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int loopLenth = Integer.parseInt(scanner.nextLine());
+        Map<String, Integer> carMileage = new LinkedHashMap<>();
+        Map<String, Integer> carFuel = new LinkedHashMap<>();
+
+        for (int i = 0; i < loopLenth; i++) {
+            String carInput = scanner.nextLine();
+            String[] carTokens = carInput.split("\\|");
+            String carModel = carTokens[0];
+            int mileage = Integer.parseInt(carTokens[1]);
+            int fuelAvailable = Integer.parseInt(carTokens[2]);
+            carMileage.putIfAbsent(carModel, mileage);
+            carFuel.putIfAbsent(carModel, fuelAvailable);
+        }
+
+        String input = scanner.nextLine();
+        while (!input.equals("Stop")) {
+            String[] tokens = input.split(" : ");
+            String command = tokens[0];
+            String carModel = tokens[1];
+            int currentFuelAvailable = carFuel.get(carModel);
+            switch (command) {
+                case "Drive":
+                    int distance = Integer.parseInt(tokens[2]);
+                    int fuel = Integer.parseInt(tokens[3]);
+                    int newMileage = carMileage.get(carModel) + distance;
+
+                    if (currentFuelAvailable < fuel) {
+                        System.out.println("Not enough fuel to make that ride");
+                    } else {
+                        int newFuelAvailable = currentFuelAvailable - fuel;
+                        carFuel.remove(carModel);
+                        carMileage.remove(carModel);
+
+                            carFuel.put(carModel, newFuelAvailable);
+                            carMileage.put(carModel, newMileage);
+                            System.out.printf("%s driven for %d kilometers. %d liters of fuel consumed.%n",
+                                    carModel, distance, fuel);
+
+                        if (newMileage >= 100000) {
+                            carFuel.remove(carModel);
+                            carMileage.remove(carModel);
+                            System.out.printf("Time to sell the %s!%n",
+                                    carModel);
+                        }
+                    }
+                    break;
+                case "Refuel":
+                    int fuelGiven = Integer.parseInt(tokens[2]);
+                    carFuel.remove(carModel);
+                    if (currentFuelAvailable + fuelGiven > 75){
+                        carFuel.put(carModel, 75);
+                        System.out.printf("%s refueled with %d liters%n",
+                                carModel, 75 - currentFuelAvailable);
+                    } else {
+                        carFuel.put(carModel, currentFuelAvailable + fuelGiven);
+                        System.out.printf("%s refueled with %d liters%n",
+                                carModel, fuelGiven);
+                    }
+                    break;
+                case "Revert":
+                    int currentMileage = carMileage.get(carModel);
+                    int mileageGiven = Integer.parseInt(tokens[2]);
+                    int newMileages = currentMileage - mileageGiven;
+
+                    carMileage.remove(carModel);
+                    if (newMileages >= 10000) {
+                        carMileage.put(carModel, newMileages);
+                        System.out.printf("%s mileage decreased by %d kilometers%n",
+                                carModel, mileageGiven);
+                    } else {
+                        carMileage.put(carModel, 10000);
+                    }
+                    break;
+            }
+            input = scanner.nextLine();
+        }
+        carMileage. // - Descending Order - //
+                        entrySet().
+                        stream().
+                        sorted((a, b) -> {
+                    int result = Integer.compare(b.getValue(), a.getValue()); // - Comparing by values sizes -  //
+                    if (result == 0){
+                        result = a.getKey().compareTo(b.getKey()); // - Then comparing by key names  - //
+                    }
+                    return result;
+                } ) .forEach(entry -> { // - Printing the results - //
+                    int currentFuelInTank = carFuel.get(entry.getKey());
+            System.out.printf("%s -> Mileage: %d kms, Fuel in the tank: %d lt.%n",
+                    entry.getKey(), entry.getValue(), currentFuelInTank);
+                });
+    }
+}
