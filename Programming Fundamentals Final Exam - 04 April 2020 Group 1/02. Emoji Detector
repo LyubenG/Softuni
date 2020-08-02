@@ -1,0 +1,53 @@
+package com.company;
+
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        List<String> coolEmojis = new ArrayList<>();
+        String[] numbers = input.split("\\D+");
+        StringBuilder allNumbers = new StringBuilder();
+        int sum = 1;
+        for (String number : numbers) {
+            allNumbers.append(number);
+        }
+        for (int i = 0; i < allNumbers.length(); i++) {
+            sum *= Integer.parseInt(String.valueOf(allNumbers.charAt(i)));
+        }
+        System.out.printf("Cool threshold: %d%n",
+                sum);
+
+        final String emojiRegex = "(::|\\*\\*)(?<name>[A-Z][a-z]{2,})\\1";
+        Pattern pattern = Pattern.compile(emojiRegex);
+        Matcher matcher = pattern.matcher(input);
+
+        int counterForAllEmojis = 0;
+        int counterForCoolOnes = 0;
+        while (matcher.find()) {
+            counterForAllEmojis++;
+            int sumOfAscii = 0;
+            String fullWord = matcher.group();
+            String currentWord = matcher.group("name");
+
+            for (int i = 0; i < currentWord.length(); i++) {
+
+                int currentChar = currentWord.charAt(i);
+                sumOfAscii += currentChar;
+                if (sumOfAscii >= sum) {
+                    counterForCoolOnes++;
+                    coolEmojis.add(fullWord);
+                    break;
+                }
+            }
+        }
+            System.out.printf("%s emojis found in the text. The cool ones are:%n",
+                    counterForAllEmojis);
+            for (String emoji : coolEmojis) {
+                System.out.println(emoji);
+            }
+    }
+}
