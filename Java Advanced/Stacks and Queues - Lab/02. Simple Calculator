@@ -1,0 +1,23 @@
+package com.company;
+ 
+import java.util.*;
+ 
+public class Main {
+ 
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String expression = scanner.nextLine();
+        String[] split = expression.split("\\s+");
+ 
+        int sum = 0;
+        sum += Integer.parseInt(split[0]);
+        for (int i = 1; i < split.length; i++) {
+            if (split[i].equals("+")){
+                sum += Integer.parseInt(split[++i]);
+            } else {
+                sum -= Integer.parseInt(split[++i]);
+            }
+        }
+        System.out.println(sum);
+    }
+}
