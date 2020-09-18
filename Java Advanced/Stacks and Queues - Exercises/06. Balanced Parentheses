@@ -1,0 +1,42 @@
+ackage com.company;
+
+import java.lang.reflect.Array;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+        ArrayDeque<Character> openingBrackets = new ArrayDeque<>();
+        boolean areBalanced = true;
+        char currentChar = 0;
+        for (int i = 0; i < input.length(); i++) {
+            currentChar = input.charAt(i);
+            if (input.charAt(i) == '(' || input.charAt(i) == '{' || input.charAt(i) == '['){
+                openingBrackets.push(currentChar);
+            } else if (input.charAt(i) == ')' || input.charAt(i) == '}' || input.charAt(i) == ']'){
+                if (openingBrackets.isEmpty()){
+                    areBalanced = false;
+                    break;
+                }
+                if (currentChar == '}' && openingBrackets.pop() != '{'){
+                    areBalanced = false;
+                    break;
+                } else if (currentChar == ']' && openingBrackets.pop() != '['){
+                    areBalanced = false;
+                    break;
+                } else if ((currentChar == ')' && openingBrackets.pop() != '(')){
+                    areBalanced = false;
+                    break;
+                }
+            }
+        } if (areBalanced){
+            System.out.println("YES");
+        } else {
+            System.out.println("NO");
+        }
+    }
+
+
+}
