@@ -1,0 +1,34 @@
+package com.company;
+
+import java.lang.reflect.Array;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ArrayDeque<Integer> stackNumbers = new ArrayDeque<>();
+
+        int n = Integer.parseInt(numbers[0]);
+        int s = Integer.parseInt(numbers[1]);
+        int x = Integer.parseInt(numbers[2]);
+
+        String[] numbers2 = scanner.nextLine().split("\\s+");
+        for (int i = 0; i < n; i++) {
+            stackNumbers.push(Integer.parseInt(numbers2[i]));
+        }
+        for (int i = 0; i < s; i++) {
+            stackNumbers.pop();
+        }
+
+        if (stackNumbers.contains(x)) {
+            System.out.println(true);
+        } else {
+            if (!stackNumbers.isEmpty()) {
+                System.out.println(Collections.min(stackNumbers));
+            } else {
+                System.out.println(0);
+            }
+        }
+    }
+}
