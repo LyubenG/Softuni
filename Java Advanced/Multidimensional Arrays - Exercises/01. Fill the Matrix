@@ -1,0 +1,51 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[] inputTokens = scanner.nextLine().split(", ");
+        int sizeOfArray = Integer.parseInt(inputTokens[0]);
+        String typeOfArray = inputTokens[1];
+
+        int[][] matrix = new int[sizeOfArray][sizeOfArray];
+        fillInMatrix(matrix, sizeOfArray, typeOfArray, scanner);
+        printMatrix(matrix);
+    }
+
+    private static void printMatrix(int[][] matrix) {
+        for (int rows = 0; rows < matrix.length; rows++) {
+            for (int columns = 0; columns < matrix.length; columns++) {
+                System.out.print(matrix[columns][rows] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static void fillInMatrix(int[][] matrix, int sizeOfArray, String typeOfArray, Scanner scanner) {
+        int startingNumber = 1;
+        if (typeOfArray.equals("A")) {
+            for (int columns = 0; columns < sizeOfArray; columns++) {
+                for (int rows = 0; rows < sizeOfArray; rows++) {
+                    matrix[columns][rows] = startingNumber++;
+                }
+                System.out.println();
+            }
+        } else if (typeOfArray.equals("B")) {
+            for (int columns = 0; columns < sizeOfArray; columns++) {
+                if (columns % 2 == 0) {
+                    for (int rows = 0; rows < sizeOfArray; rows++) {
+                        matrix[columns][rows] = startingNumber++;
+                    }
+                    System.out.println();
+                } else {
+                    for (int rows = matrix.length - 1; rows >= 0 ; rows--) {
+                        matrix[columns][rows] = startingNumber++;
+                    }
+                }
+
+            }
+        }
+    }
+}
