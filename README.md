@@ -1,2 +1,2 @@
 # Softuni
-*.java linguist-detectable=false
+*.java linguist-detectable=true
