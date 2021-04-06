@@ -1,1 +1,1 @@
-# Softuni
+# Softuni Java Course
